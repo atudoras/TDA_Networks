@@ -1,3 +1,3 @@
 # TDA_Networks
-\usepackage{pdfpages}
-\includepdf[pages=-]{README.pdf}
+
+Read the file README.pdf for more information
