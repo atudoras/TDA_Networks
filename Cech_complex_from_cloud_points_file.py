@@ -91,9 +91,10 @@ for line in open('parameters.txt', 'r'):
     parameters_list.append(float(row[0]))
     
 field_extension = parameters_list[0] #Maximum entension of a synaptic field to create an edge
+min_d = int(parameters_list[1])
 max_d = int(parameters_list[2])
 
-maxsimplex = len(data) #We need to specify a maximum dimension of a simplex to make a computationally efficient program
+maxsimplex = max_d #We need to specify a maximum dimension of a simplex to make a computationally efficient program
 n_vertices = len(data)
 position_dict = {i:data[i] for i in range(n_vertices)} # To specify the position of our nodes in networkx package
 
@@ -126,7 +127,7 @@ with open('./Results/Result_SC.txt','w+') as file:
             g.add_edge(simplex[0],simplex[1])
     
 cmap = cm.hot
-norm = Normalize(vmin=0, vmax=maxsimplex)
+norm = Normalize(vmin=0, vmax=max_d)
 m = cm.ScalarMappable(norm=norm, cmap=cmap)
 
 # Visualize matrix as graph, highlighting the relevant simplices
@@ -142,7 +143,7 @@ nx.draw_networkx_nodes(G, pos, **options)
 nx.draw_networkx_edges(G, pos, edge_color='k') # Background network with all edges
 
 
-min_d = int(parameters_list[1])
+
 
 filtration = st.get_filtration()
 for filtered_value in filtration:
@@ -156,7 +157,7 @@ for filtered_value in filtration:
                 pos,
                 edgelist=edges,
                 width=1.5,
-                edge_color = m.to_rgba(max_d-dim+min_d)
+                edge_color = 'r'
             )
 
 labels = {i:i for i in range(n_vertices)}
