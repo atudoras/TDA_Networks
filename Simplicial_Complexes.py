@@ -8,9 +8,6 @@ def IsMaxCell(points, simplex, epsilon):
     ----------
     Input:
         points: complete set of points of the simplicial complex _np.array(np.array)_
-        c: centre of the bounding circle containing the evaluated simplex _np.array_
-        r: radius of the bounding circle containing the evaluated simplex _float_
-        boundary: list of the indices of the points that lie on the circle _np.array_
         simplex: list of the indices of the points that form the evaluated simplex _np.array_
         max_r: maximum radius of the bounding circle _float_
     
@@ -96,7 +93,34 @@ def EnumSimplices(points, epsilon, max_d):
     
     n = len(points)
     all_combinations = []
-    for r in range(max_d):
+    for r in range(max_d+1):
+        combinations_obj = itertools.combinations(np.arange(n), r)
+        combinations_list = list(combinations_obj)
+        all_combinations += combinations_list
+    all_combinations.remove(())
+    
+    simplices = []
+    
+    for simplex in all_combinations:
+        simplex = np.asarray(simplex)
+        m = len(simplex)
+        
+        if m < 4:
+            _, r, _ = gs.MinSphere(points, np.array([]), simplex, np.array([]), epsilon)
+        else:
+            _, r, _ = gs.MinSphere(points, np.array([]), simplex[0:3], simplex[3:], epsilon)
+        
+        if r < epsilon+tol:
+            simplices.append(list(simplex))
+        
+    return simplices
+
+def EnumSimplicesFiltered(points,epsilon,min_d,max_d):
+    tol = 1e-6
+    
+    n = len(points)
+    all_combinations = []
+    for r in range(min_d,max_d+1):
         combinations_obj = itertools.combinations(np.arange(n), r)
         combinations_list = list(combinations_obj)
         all_combinations += combinations_list

@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[28]:
-
-
 '''
 The following program computes the topological properties of a cloud of points using a coordinates file as input
 We must have in the same folder where the program is executed a 'points.txt' file with numbers stored in the following format:
@@ -110,12 +104,12 @@ g = Graph(n_vertices)
 start_time = time.time()
 cech_complex = sc.EnumSimplices(points, field_extension, max_d)
 print('Number of points: ', n_vertices)
-print('Maximum simplices: ', max_d)
+print('Maximum dimension of simplices: ', max_d)
 print("--- %s seconds ---" % (time.time() - start_time))
 #cech_complex = sc.EnumMaxSimplices_Efficient(points,field_extension,list(),list(np.arange(n_vertices)))
 st = gudhi.SimplexTree()
 for simplex in cech_complex:
-    st.insert(simplex, float(min(simplex)))
+    st.insert(simplex, float(len(simplex)))
 
 # Note that, if there are n vertices, then the maximum number of edges is n*(n-1)
 result_str = 'Simplicial complex is of dimension ' + repr(st.dimension()) + ' - ' +     repr(st.num_simplices()) + ' simplices - ' +     repr(n_vertices) + ' vertices.'
@@ -176,7 +170,7 @@ plt.draw()
 plt.savefig('./Results/Geometrical_SC.png')
 
 plt.figure()
-diag = st.persistence(min_persistence=0.1)
+diag = st.persistence(min_persistence=-1)
 gudhi.plot_persistence_barcode(diag, legend=True, max_intervals=0)
 plt.savefig('./Results/Persistence_barcode.png')
 
@@ -187,4 +181,3 @@ get_ipython().run_line_magic('run', '"./TDA.py"')
 with open('./Results/Betti_numbers.txt','w') as file:
     for i in range(max_d+1):
         file.write("Betti number %s: %s\n" % (i,Betti_k(G,i)))
-
