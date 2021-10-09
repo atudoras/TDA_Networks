@@ -13,7 +13,6 @@ As an output, it creates a 'Results' folder with 4 new files:
     - Result_SC.txt: with the abstract information of the resulting simplicial complex
     - Geometrical_SC.png: geometrical representation of the simplicial complex, highlighting the relevant simplices
     - Persistence_barcode.png: plot of the persistence homology properties
-    - Betti_numbers.txt: with the computation of the Betti numbers 
 '''
 
 
@@ -174,11 +173,3 @@ plt.figure()
 diag = st.persistence(min_persistence=-1)
 gudhi.plot_persistence_barcode(diag, legend=True, max_intervals=0)
 plt.savefig('./Results/Persistence_barcode.png')
-
-# Import TDA functions
-get_ipython().run_line_magic('run', '"./TDA.py"')
-
-# Compute Betti numbers
-with open('./Results/Betti_numbers.txt','w') as file:
-    for i in range(max_d+1):
-        file.write("Betti number %s: %s\n" % (i,Betti_k(G,i)))

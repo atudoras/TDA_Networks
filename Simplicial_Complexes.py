@@ -123,9 +123,7 @@ def EnumSimplicesFiltered(points,epsilon,min_d,max_d):
     for r in range(min_d,max_d+1):
         combinations_obj = itertools.combinations(np.arange(n), r)
         combinations_list = list(combinations_obj)
-        all_combinations += combinations_list
-    all_combinations.remove(())
-    
+        all_combinations += combinations_list    
     simplices = []
     
     for simplex in all_combinations:
