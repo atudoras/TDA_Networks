@@ -140,6 +140,23 @@ def EnumSimplicesFiltered(points,epsilon,min_d,max_d):
         
     return simplices
 
+def SimplicesCechComplex(position_dict, n_lambda, max_d):
+    LS = list()
+    indices = position_dict.keys()
+    for r in range(1,max_d-1):
+        L = list(itertools.combinations(indices,r+1))
+        for simplex_ind in L:
+            simplex = [position_dict[i] for i in simplex_ind]
+            Xc = [i[0] for i in simplex]
+            Yc = [i[1] for i in simplex]
+            Xc.sort()
+            Yc.sort()
+            dy = Yc[r]-Yc[0]
+            dx = Xc[r]-Xc[0]
+            if (dx < n_lambda and dy < n_lambda):
+                LS.append(simplex_ind)   
+    return LS
+
 # def EnumMaxSimplices_Efficient(points,epsilon,max_simplices,left):
 #     #This is only an idea, the code is not complete
 #     n = len(left)
